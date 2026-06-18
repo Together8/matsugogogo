@@ -1,0 +1,9 @@
+{
+  "name": "Matsu Trip V2.0",
+  "short_name": "MatsuTrip",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#f7f2e8",
+  "theme_color": "#2f6f73",
+  "icons": []
+}

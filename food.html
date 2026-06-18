@@ -1,0 +1,11 @@
+<!doctype html><html lang="zh-Hant"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>美食推薦</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="css/style.css">
+<meta name="theme-color" content="#2f6f73"></head><body>
+<script src="js/app.js"></script><script>renderShell('food.html');</script>
+<main class="container"><h1 style="color:var(--main)">🍜 美食推薦</h1>
+<div class="notice">餐廳照片使用示意圖；營業時間變動機率高，出發前請點 Google 導航查看當日營業。</div>
+<div id="foods" class="place-grid"></div></main>
+<script>loadData().then(()=>{document.getElementById('foods').innerHTML=DATA.places.filter(p=>p.type==='美食').map(cardHTML).join('')});</script>
+
+</body></html>

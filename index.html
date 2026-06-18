@@ -1,0 +1,30 @@
+<!doctype html><html lang="zh-Hant"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>馬祖行程 V2.0</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="css/style.css">
+<meta name="theme-color" content="#2f6f73"></head><body>
+<script src="js/app.js"></script><script>renderShell('index.html');</script>
+
+<header class="hero"><div class="hero-inner"><span class="pill">2026/6/23 - 6/25｜不玩水版</span><h1>馬祖南竿・北竿 3天2夜</h1><p>手機 App 風格行程表：導航、船班、花費、打卡一次整合。</p></div></header>
+<main class="container">
+  <section class="grid">
+    <div class="card"><h2>Day1 修正版</h2><p>08:30 抵達南竿福澳港 → 牛角海邊民宿放行李 → 早餐 → 南竿行程。</p></div>
+    <div class="card"><h2>Day2 修正版</h2><p>09:00 民宿出門 → 福澳港 → 北竿 → 早餐 → 北竿行程。</p></div>
+    <div class="card"><h2>住宿</h2><p>馬祖牛角海邊民宿餐飲<br>209連江縣南竿鄉復興村121號</p><a class="btn primary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=馬祖牛角海邊民宿餐飲 209連江縣南竿鄉復興村121號">📍 導航</a></div>
+  </section>
+  <section class="big-buttons">
+    <a class="bigbtn" href="day1.html">Day1 行程</a>
+    <a class="bigbtn" href="day2.html">Day2 北竿</a>
+    <a class="bigbtn" href="transport.html">船班/航班</a>
+    <a class="bigbtn" href="budget.html">花費計算</a>
+    <a class="bigbtn" href="checklist.html">打卡清單</a>
+    <a class="bigbtn" href="food.html">美食清單</a>
+  </section>
+  <h2 class="section-title">今日重點</h2>
+  <div id="today"></div>
+</main>
+<script>
+loadData().then(()=>{document.getElementById('today').innerHTML=itineraryHTML('day1')});
+</script>
+
+
+</body></html>

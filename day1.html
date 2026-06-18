@@ -1,0 +1,70 @@
+
+const DATA = {
+  site: null, places: [], itinerary: {}
+};
+async function loadData(){
+  const [site, places, itinerary] = await Promise.all([
+    fetch('data/site.json').then(r=>r.json()),
+    fetch('data/places.json').then(r=>r.json()),
+    fetch('data/itinerary.json').then(r=>r.json())
+  ]);
+  DATA.site=site; DATA.places=places; DATA.itinerary=itinerary;
+}
+function byId(id){return DATA.places.find(p=>p.id===id)||{}}
+function navHTML(active=''){
+  const links=[
+    ['index.html','首頁'],['day1.html','Day1'],['day2.html','Day2'],['day3.html','Day3'],
+    ['food.html','美食'],['attractions.html','景點'],['transport.html','交通'],['budget.html','花費'],['checklist.html','打卡']
+  ];
+  return `<div class="appbar"><nav class="nav"><div class="brand">Matsu Trip V2.0</div>${links.map(([u,t])=>`<a class="${active==u?'active':''}" href="${u}">${t}</a>`).join('')}</nav></div>
+  <div class="footer-nav">${links.slice(0,5).map(([u,t])=>`<a href="${u}">${t}</a>`).join('')}<a href="budget.html">花費</a></div>`;
+}
+function renderShell(active='index.html'){
+  document.body.insertAdjacentHTML('afterbegin', navHTML(active));
+}
+function placeActions(p){
+  return `<div class="actions">
+    <a class="btn primary" target="_blank" href="${p.map}">📍 Google 導航</a>
+    <button class="btn" onclick="toggleCheck('${p.id}','${p.name}')">📸 加入打卡</button>
+  </div>`;
+}
+function itineraryHTML(day){
+  return `<div class="timeline">${DATA.itinerary[day].map(([time,title,pid,note])=>{
+    const p=byId(pid);
+    return `<article class="time-card">
+      <time>${time}</time><div>
+      <h3>${title}</h3><p>${note}</p>
+      ${p.name?`<p class="meta">地點：${p.name}｜停留：${p.stay||'彈性'}｜預估：NT$${p.cost||0}/人</p>${placeActions(p)}`:''}
+      </div></article>`;
+  }).join('')}</div>`;
+}
+function cardHTML(p){
+  return `<article class="place-card">
+    <img src="${p.image}" alt="${p.name}">
+    <div class="place-body">
+      <h3>${p.name}</h3>
+      <p class="meta">${p.area}｜${p.type}</p>
+      <p>${p.note||''}</p>
+      <p><b>營業/開放：</b>${p.hours||'出發前確認'}</p>
+      ${p.food?`<p><b>推薦：</b>${p.food}</p>`:''}
+      <p><b>預估：</b>NT$${p.cost||0}/人｜<b>停留：</b>${p.stay||'彈性'}</p>
+      ${placeActions(p)}
+    </div>
+  </article>`;
+}
+function toggleCheck(id,name){
+  const key='matsu-checks';
+  const obj=JSON.parse(localStorage.getItem(key)||'{}');
+  obj[id]=!obj[id];
+  localStorage.setItem(key,JSON.stringify(obj));
+  if(!localStorage.getItem('matsu-check-names')){
+    localStorage.setItem('matsu-check-names',JSON.stringify({}));
+  }
+  const names=JSON.parse(localStorage.getItem('matsu-check-names')||'{}');
+  names[id]=name;
+  localStorage.setItem('matsu-check-names',JSON.stringify(names));
+  alert(obj[id]?'已加入/完成打卡':'已取消打卡');
+  if(window.renderChecklist) renderChecklist();
+}
+function money(n){return Number(n||0).toLocaleString('zh-TW')}
+if('serviceWorker' in navigator){ window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js')); }

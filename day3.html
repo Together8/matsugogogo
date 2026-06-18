@@ -1,0 +1,10 @@
+<!doctype html><html lang="zh-Hant"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Day3｜回程</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="css/style.css">
+<meta name="theme-color" content="#2f6f73"></head><body>
+<script src="js/app.js"></script><script>renderShell('day3.html');</script>
+<main class="container"><h1 style="color:var(--main)">Day3｜回程</h1>
+    <div class="notice">所有營業時間、船班、天候請以當日官方/Google Maps 為準；此頁重點是旅遊動線與快速導航。</div>
+    <div id="list"></div></main><script>loadData().then(()=>{document.getElementById('list').innerHTML=itineraryHTML('day3')});</script>
+
+</body></html>

@@ -1,30 +1,277 @@
-<!doctype html><html lang="zh-Hant"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>馬祖行程 V2.0</title><link rel="manifest" href="manifest.json"><link rel="stylesheet" href="css/style.css">
-<meta name="theme-color" content="#2f6f73"></head><body>
-<script src="js/app.js"></script><script>renderShell('index.html');</script>
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>馬祖南竿・北竿 3天2夜 V2.1</title>
+<meta name="theme-color" content="#2f6f73">
+<style>
+:root{
+  --bg:#f7f2e8;--card:#fffdf8;--ink:#263238;--muted:#68767a;
+  --main:#2f6f73;--soft:#a3d5dc;--sand:#e3d5c9;--accent:#e0a458;
+  --shadow:0 10px 25px rgba(38,50,56,.12)
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Microsoft JhengHei","Noto Sans TC",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7}
+a{text-decoration:none;color:inherit}
+.topbar{position:sticky;top:0;z-index:99;background:rgba(255,253,248,.95);backdrop-filter:blur(10px);box-shadow:0 2px 18px rgba(0,0,0,.08)}
+.nav{max-width:1100px;margin:auto;display:flex;gap:8px;align-items:center;overflow-x:auto;padding:10px 14px}
+.brand{font-weight:900;color:var(--main);white-space:nowrap;margin-right:auto}
+.nav button{border:0;border-radius:999px;background:#efe8dc;padding:9px 13px;font-weight:900;white-space:nowrap;cursor:pointer}
+.nav button.active{background:var(--main);color:white}
+.hero{min-height:330px;color:white;display:flex;align-items:end;background:linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.55)),url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1600&q=80");background-size:cover;background-position:center}
+.hero-inner{max-width:1100px;width:100%;margin:auto;padding:58px 18px 34px}
+.pill{display:inline-block;border:1px solid rgba(255,255,255,.9);padding:6px 14px;border-radius:999px;font-weight:900;margin-bottom:12px}
+h1{font-size:clamp(34px,7vw,66px);line-height:1.08;margin:0 0 12px}
+.container{max-width:1100px;margin:auto;padding:22px 16px 92px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px;margin:18px 0}
+.card{background:var(--card);border-radius:22px;padding:18px;box-shadow:var(--shadow)}
+.card h2,.card h3{margin-top:0;color:var(--main)}
+.section-title{font-size:26px;color:var(--main);border-left:8px solid var(--soft);padding-left:12px;margin:34px 0 16px}
+.btn{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;background:#eaf2f3;color:#1f4d51;padding:9px 13px;font-weight:900;cursor:pointer;margin:4px 4px 0 0}
+.btn.primary{background:var(--main);color:white}
+.btn.warn{background:#fff0d7;color:#7a4b00}
+.big-buttons{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px;margin:20px 0}
+.bigbtn{background:var(--main);color:white;padding:16px;border-radius:18px;font-weight:900;text-align:center;box-shadow:var(--shadow);cursor:pointer}
+.notice{background:#fff8e8;border-left:7px solid var(--accent);border-radius:16px;padding:14px;margin:14px 0}
+.timeline{display:flex;flex-direction:column;gap:14px}
+.time-card{display:grid;grid-template-columns:80px 1fr;gap:14px;background:var(--card);border-radius:20px;padding:16px;border-left:7px solid var(--soft);box-shadow:var(--shadow)}
+.time-card time{font-weight:900;color:var(--main)}
+.time-card h3{margin:0 0 6px}
+.time-card p{margin:0;color:var(--muted)}
+.meta{font-size:14px;color:var(--muted);margin-top:6px!important}
+.place-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.place-card{overflow:hidden;background:var(--card);border-radius:22px;box-shadow:var(--shadow)}
+.place-card img{width:100%;height:155px;object-fit:cover;display:block}
+.place-body{padding:16px}
+input{width:100%;padding:12px;border:1px solid #ddd;border-radius:14px;background:white;font-size:16px}
+label{font-weight:900;color:var(--main);display:block;margin:10px 0 6px}
+.budget-row{display:grid;grid-template-columns:1.4fr .8fr 45px;gap:8px;margin-bottom:8px}
+.total{font-size:28px;font-weight:900;color:var(--main)}
+.check-item{display:flex;align-items:center;gap:10px;background:var(--card);padding:13px;border-radius:16px;margin-bottom:8px;box-shadow:0 4px 12px rgba(0,0,0,.06);color:var(--ink)}
+.check-item input{width:auto;transform:scale(1.25)}
+.progress{height:14px;background:#eee;border-radius:999px;overflow:hidden}
+.progress span{display:block;height:100%;background:var(--main);width:0}
+.page{display:none}
+.page.active{display:block}
+.footer-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,253,248,.96);backdrop-filter:blur(8px);box-shadow:0 -2px 20px rgba(0,0,0,.08);display:none;z-index:100}
+.footer-nav button{flex:1;text-align:center;border:0;background:transparent;padding:10px 4px;font-size:12px;font-weight:900;color:var(--main)}
+@media(max-width:720px){
+  .nav button{display:none}.brand{margin:auto}.hero{min-height:280px}
+  .time-card{grid-template-columns:1fr}.footer-nav{display:flex}
+  .container{padding-bottom:90px}.budget-row{grid-template-columns:1fr 95px 40px}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="nav">
+    <div class="brand">Matsu Trip V2.1</div>
+    <button onclick="showPage('home')" class="active">首頁</button>
+    <button onclick="showPage('day1')">Day1</button>
+    <button onclick="showPage('day2')">Day2</button>
+    <button onclick="showPage('day3')">Day3</button>
+    <button onclick="showPage('food')">美食</button>
+    <button onclick="showPage('places')">景點</button>
+    <button onclick="showPage('transport')">交通</button>
+    <button onclick="showPage('budget')">花費</button>
+    <button onclick="showPage('checklist')">打卡</button>
+  </div>
+</div>
 
-<header class="hero"><div class="hero-inner"><span class="pill">2026/6/23 - 6/25｜不玩水版</span><h1>馬祖南竿・北竿 3天2夜</h1><p>手機 App 風格行程表：導航、船班、花費、打卡一次整合。</p></div></header>
+<div class="footer-nav">
+  <button onclick="showPage('home')">首頁</button>
+  <button onclick="showPage('day1')">Day1</button>
+  <button onclick="showPage('day2')">Day2</button>
+  <button onclick="showPage('transport')">交通</button>
+  <button onclick="showPage('budget')">花費</button>
+  <button onclick="showPage('checklist')">打卡</button>
+</div>
+
+<header class="hero">
+  <div class="hero-inner">
+    <span class="pill">2026/6/23 - 6/25｜不玩水版</span>
+    <h1>馬祖南竿・北竿 3天2夜</h1>
+    <p>手機 App 風格行程表：導航、船班、花費、打卡一次整合。</p>
+  </div>
+</header>
+
 <main class="container">
-  <section class="grid">
-    <div class="card"><h2>Day1 修正版</h2><p>08:30 抵達南竿福澳港 → 牛角海邊民宿放行李 → 早餐 → 南竿行程。</p></div>
-    <div class="card"><h2>Day2 修正版</h2><p>09:00 民宿出門 → 福澳港 → 北竿 → 早餐 → 北竿行程。</p></div>
-    <div class="card"><h2>住宿</h2><p>馬祖牛角海邊民宿餐飲<br>209連江縣南竿鄉復興村121號</p><a class="btn primary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=馬祖牛角海邊民宿餐飲 209連江縣南竿鄉復興村121號">📍 導航</a></div>
+  <section id="home" class="page active">
+    <div class="grid">
+      <div class="card"><h2>Day1 修正版</h2><p>08:30 抵達南竿福澳港 → 牛角海邊民宿放行李 → 早餐 → 南竿行程。</p></div>
+      <div class="card"><h2>Day2 修正版</h2><p>09:00 民宿出門 → 福澳港 → 北竿 → 早餐 → 北竿行程。</p></div>
+      <div class="card"><h2>住宿</h2><p>馬祖牛角海邊民宿餐飲<br>209連江縣南竿鄉復興村121號</p><a class="btn primary" target="_blank" href="https://www.google.com/maps/search/?api=1&query=馬祖牛角海邊民宿餐飲 209連江縣南竿鄉復興村121號">📍 導航</a></div>
+    </div>
+    <div class="big-buttons">
+      <div class="bigbtn" onclick="showPage('day1')">Day1 行程</div>
+      <div class="bigbtn" onclick="showPage('day2')">Day2 北竿</div>
+      <div class="bigbtn" onclick="showPage('transport')">船班/航班</div>
+      <div class="bigbtn" onclick="showPage('budget')">花費計算</div>
+      <div class="bigbtn" onclick="showPage('checklist')">打卡清單</div>
+      <div class="bigbtn" onclick="showPage('food')">美食清單</div>
+    </div>
+    <h2 class="section-title">今日重點</h2>
+    <div id="homeToday"></div>
   </section>
-  <section class="big-buttons">
-    <a class="bigbtn" href="day1.html">Day1 行程</a>
-    <a class="bigbtn" href="day2.html">Day2 北竿</a>
-    <a class="bigbtn" href="transport.html">船班/航班</a>
-    <a class="bigbtn" href="budget.html">花費計算</a>
-    <a class="bigbtn" href="checklist.html">打卡清單</a>
-    <a class="bigbtn" href="food.html">美食清單</a>
+
+  <section id="day1" class="page"><h2 class="section-title">Day1｜6/23 南竿</h2><div class="notice">08:30 抵達南竿福澳港，先去民宿放東西，吃早餐後再開始行程。</div><div id="day1List"></div></section>
+  <section id="day2" class="page"><h2 class="section-title">Day2｜6/24 北竿</h2><div class="notice">09:00 從民宿出發前往福澳港；請先查船班與訂票狀態。</div><div id="day2List"></div></section>
+  <section id="day3" class="page"><h2 class="section-title">Day3｜6/25 回程</h2><div id="day3List"></div></section>
+
+  <section id="food" class="page"><h2 class="section-title">🍜 美食推薦</h2><div class="notice">照片為示意圖；營業時間易變動，出發前請點 Google 導航查看當日狀態。</div><div id="foodList" class="place-grid"></div></section>
+  <section id="places" class="page"><h2 class="section-title">📸 景點介紹</h2><div id="placeList" class="place-grid"></div></section>
+
+  <section id="transport" class="page">
+    <h2 class="section-title">✈️ 航班 / 船班資訊</h2>
+    <div class="grid">
+      <div class="card"><h2>南竿 ⇄ 北竿船班查詢</h2><p>查詢福澳港、白沙港等即時/表定船班。</p><a class="btn primary" target="_blank" href="https://www.matsu-nsa.gov.tw/zh-TW/transport/ferry-schedule">船班查詢</a></div>
+      <div class="card"><h2>馬祖海上交通訂位購票</h2><p>可處理訂位、訂單查詢、退票/改時間。</p><a class="btn primary" target="_blank" href="https://www.matsuebs.com/">訂票/訂單查詢</a></div>
+      <div class="card"><h2>南北海運</h2><p>南北之星、東海明珠與航班異動資訊。</p><a class="btn primary" target="_blank" href="https://client.matsu.idv.tw/North-South/">南北海運</a></div>
+      <div class="card"><h2>全港通航業</h2><p>航班公告、訂位取票、票價與運車寄物資訊。</p><a class="btn primary" target="_blank" href="https://client.matsu.idv.tw/apt/news.html">航班公告</a></div>
+    </div>
+    <h2 class="section-title">第二天建議操作</h2>
+    <div class="timeline">
+      <article class="time-card"><time>出發前</time><div><h3>先查福澳港 → 白沙港</h3><p>確認當天是否停航、航班時間是否異動。</p></div></article>
+      <article class="time-card"><time>訂票</time><div><h3>使用馬祖海上交通訂位購票系統</h3><p>若系統可訂，先訂票；若現場購票，請提早到港口。</p></div></article>
+      <article class="time-card"><time>北竿交通</time><div><h3>確認北竿當地租車/包車</h3><p>南竿車輛是否能上船要另行確認，最穩是到北竿後租車或包車。</p></div></article>
+    </div>
   </section>
-  <h2 class="section-title">今日重點</h2>
-  <div id="today"></div>
+
+  <section id="budget" class="page">
+    <h2 class="section-title">💰 花費計算</h2>
+    <section class="card">
+      <label>人數</label><input id="people" type="number" min="1" value="5">
+      <div id="rows"></div>
+      <button class="btn primary" onclick="addRow()">新增花費</button>
+      <button class="btn" onclick="saveBudget(true)">儲存</button>
+      <button class="btn warn" onclick="resetBudget()">重設</button>
+      <hr><p>總花費</p><div class="total" id="total">NT$0</div><p>平均每人</p><div class="total" id="avg">NT$0</div>
+    </section>
+  </section>
+
+  <section id="checklist" class="page">
+    <h2 class="section-title">📸 景點打卡清單</h2>
+    <section class="card"><p>完成度</p><div class="progress"><span id="bar"></span></div><p id="pct">0%</p></section>
+    <section id="checks"></section>
+  </section>
 </main>
+
 <script>
-loadData().then(()=>{document.getElementById('today').innerHTML=itineraryHTML('day1')});
+const PLACES=[
+{id:"hotel",type:"住宿",area:"南竿",name:"馬祖牛角海邊民宿餐飲",address:"209連江縣南竿鄉復興村121號",hours:"依住宿預約時間",cost:0,stay:"30分鐘",food:"可詢問民宿早餐/餐飲安排",image:"https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖牛角海邊民宿餐飲 209連江縣南竿鄉復興村121號",note:"第一天抵達後先放行李；第二天從這裡出發前往福澳港。"},
+{id:"fuao",type:"交通",area:"南竿",name:"南竿福澳港",address:"連江縣南竿鄉福澳村",hours:"依船班",cost:0,stay:"20分鐘",food:"",image:"https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=南竿福澳港",note:"南竿主要港口；第二天前往北竿建議提前查船班。"},
+{id:"breakfast-nangan",type:"美食",area:"南竿",name:"南竿早餐：繼光餅/鼎邊糊/老酒麵線",address:"南竿介壽村或民宿附近",hours:"多數早餐約 06:00–10:30，實際以店家為準",cost:120,stay:"45分鐘",food:"繼光餅夾蛋、鼎邊糊、老酒麵線",image:"https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖南竿 早餐 繼光餅",note:"抵達放完行李後先吃早餐，再開始跑行程。"},
+{id:"jinsha",type:"景點",area:"南竿",name:"津沙聚落",address:"連江縣南竿鄉津沙村",hours:"全天開放",cost:0,stay:"60分鐘",food:"",image:"https://images.unsplash.com/photo-1528164344705-47542687000d?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 津沙聚落",note:"石屋聚落、海邊散步，適合拍照。"},
+{id:"yima",type:"美食",area:"南竿",name:"依嬤的店",address:"連江縣南竿鄉",hours:"建議出發前用 Google Maps 確認當日營業",cost:350,stay:"60分鐘",food:"老酒麵線、紅糟肉、紅糟炒飯、淡菜",image:"https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 依嬤的店",note:"熱門店家，建議避開尖峰或先電話確認。"},
+{id:"beihai",type:"景點",area:"南竿",name:"北海坑道",address:"連江縣南竿鄉仁愛村",hours:"開放時間可能依潮汐調整，出發前確認",cost:0,stay:"90分鐘",food:"",image:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 北海坑道 南竿",note:"戰地坑道代表景點，不玩水也很值得看。"},
+{id:"ironfort",type:"景點",area:"南竿",name:"鐵堡",address:"連江縣南竿鄉仁愛村",hours:"全天開放，夜間注意安全",cost:0,stay:"40分鐘",food:"",image:"https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 鐵堡 南竿",note:"臨海軍事據點，停留時間不用太長。"},
+{id:"madamcafe",type:"美食",area:"南竿",name:"夫人咖啡館",address:"連江縣南竿鄉",hours:"建議以 Google Maps 當日資訊為準",cost:250,stay:"60分鐘",food:"咖啡、甜點、海景下午茶",image:"https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 夫人咖啡館",note:"下午休息點，適合看海放空。"},
+{id:"pizza",type:"美食",area:"南竿",name:"比薩大王",address:"連江縣南竿鄉",hours:"建議以 Google Maps 當日資訊為準",cost:350,stay:"70分鐘",food:"披薩、義式餐點",image:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 比薩大王",note:"第一天晚餐可安排這裡。"},
+{id:"breakfast-beigan",type:"美食",area:"北竿",name:"北竿早餐：繼光餅/鼎邊糊",address:"北竿白沙港或塘岐村附近",hours:"多數早餐約 06:00–10:30，實際以店家為準",cost:120,stay:"45分鐘",food:"繼光餅、鼎邊糊、豆漿、老酒麵線",image:"https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 北竿 早餐",note:"第二天抵達北竿後先吃早餐，再跑芹壁。"},
+{id:"qinbi",type:"景點",area:"北竿",name:"芹壁聚落",address:"連江縣北竿鄉芹壁村",hours:"全天開放",cost:0,stay:"120分鐘",food:"",image:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 芹壁聚落",note:"北竿最經典景點，建議慢慢走。"},
+{id:"chinbe-cafe",type:"美食",area:"北竿",name:"芹沃咖啡烘焙館",address:"連江縣北竿鄉芹壁村",hours:"建議以 Google Maps 當日資訊為準",cost:250,stay:"60分鐘",food:"咖啡、甜點、海景座位",image:"https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 芹沃咖啡烘焙館",note:"芹壁散步後的休息點。"},
+{id:"jingwo",type:"美食",area:"北竿",name:"鏡沃小吃",address:"連江縣北竿鄉",hours:"建議以 Google Maps 當日資訊為準",cost:300,stay:"60分鐘",food:"在地小吃、麵食、海鮮料理",image:"https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 鏡沃小吃",note:"午餐建議。"},
+{id:"qiaozai",type:"景點",area:"北竿",name:"橋仔聚落",address:"連江縣北竿鄉橋仔村",hours:"全天開放",cost:0,stay:"50分鐘",food:"",image:"https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 橋仔聚落",note:"漁村與廟宇文化。"},
+{id:"bishan",type:"景點",area:"北竿",name:"壁山觀景台",address:"連江縣北竿鄉",hours:"全天開放",cost:0,stay:"40分鐘",food:"",image:"https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 壁山觀景台",note:"北竿高點，可看機場與海岸線。"},
+{id:"liqbin",type:"美食",area:"南竿",name:"儷儐餐廳",address:"連江縣南竿鄉",hours:"建議以 Google Maps 當日資訊為準",cost:500,stay:"90分鐘",food:"海鮮、淡菜、老酒料理、合菜",image:"https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=1200&q=80",map:"https://www.google.com/maps/search/?api=1&query=馬祖 儷儐餐廳",note:"第二天回南竿晚餐。"}
+];
+
+const ITINERARY={
+day1:[
+["08:30","抵達南竿福澳港","fuao","抵達後取車或集合，先前往民宿。"],
+["09:00","民宿放行李","hotel","馬祖牛角海邊民宿餐飲，地址：209連江縣南竿鄉復興村121號。"],
+["09:30","早餐","breakfast-nangan","先補充體力，建議民宿附近或介壽村早餐。"],
+["10:30","津沙聚落","jinsha","石屋聚落與海景散步。"],
+["12:00","午餐：依嬤的店","yima","老酒麵線、紅糟肉、淡菜。"],
+["13:30","北海坑道","beihai","戰地坑道代表景點。"],
+["15:00","鐵堡","ironfort","臨海軍事據點。"],
+["16:00","夫人咖啡館","madamcafe","下午茶與海景休息。"],
+["18:00","晚餐：比薩大王","pizza","輕鬆晚餐。"],
+["20:00","夜間彈性：藍眼淚/散步","hotel","天氣合適再安排，不建議排死。"]],
+day2:[
+["09:00","民宿出發","hotel","從牛角海邊民宿前往福澳港。"],
+["09:20","福澳港確認船班/購票","fuao","建議提前查看船班與訂票網站。"],
+["10:00","抵達北竿後早餐","breakfast-beigan","白沙港或塘岐村附近用餐。"],
+["11:00","芹壁聚落","qinbi","北竿最經典聚落，慢慢散步拍照。"],
+["12:30","芹沃咖啡烘焙館","chinbe-cafe","咖啡與海景。"],
+["13:30","午餐：鏡沃小吃","jingwo","北竿在地小吃。"],
+["15:00","橋仔聚落","qiaozai","漁村與廟宇文化。"],
+["16:00","壁山觀景台","bishan","北竿高點看海岸線。"],
+["17:00","返回南竿","fuao","依船班時間彈性調整。"],
+["18:30","晚餐：儷儐餐廳","liqbin","4–5人適合合菜。"]],
+day3:[
+["06:50","起床整理","hotel","確認行李、證件、伴手禮。"],
+["07:20","簡單早餐","breakfast-nangan","不要排太遠，以免趕不上回程。"],
+["07:50","還車/前往機場或港口","hotel","依實際回程交通調整。"],
+["09:00","回程","fuao","結束馬祖行程。"]]
+};
+
+function byId(id){return PLACES.find(p=>p.id===id)||{}}
+function money(n){return Number(n||0).toLocaleString("zh-TW")}
+function actions(p){return `<div><a class="btn primary" target="_blank" href="${p.map}">📍 Google 導航</a><button class="btn" onclick="toggleCheck('${p.id}')">📸 打卡</button></div>`}
+function itineraryHTML(day){
+ return `<div class="timeline">${ITINERARY[day].map(([time,title,pid,note])=>{
+  const p=byId(pid);
+  return `<article class="time-card"><time>${time}</time><div><h3>${title}</h3><p>${note}</p><p class="meta">地點：${p.name||""}｜停留：${p.stay||"彈性"}｜預估：NT$${p.cost||0}/人</p>${p.name?actions(p):""}</div></article>`
+ }).join("")}</div>`;
+}
+function cardHTML(p){
+ return `<article class="place-card"><img src="${p.image}" alt="${p.name}"><div class="place-body"><h3>${p.name}</h3><p class="meta">${p.area}｜${p.type}</p><p>${p.note||""}</p><p><b>營業/開放：</b>${p.hours||"出發前確認"}</p>${p.food?`<p><b>推薦：</b>${p.food}</p>`:""}<p><b>預估：</b>NT$${p.cost||0}/人｜<b>停留：</b>${p.stay||"彈性"}</p>${actions(p)}</div></article>`;
+}
+function showPage(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+ const btn=[...document.querySelectorAll(".nav button")].find(b=>b.textContent.includes(id==="home"?"首頁":id==="places"?"景點":id==="transport"?"交通":id==="budget"?"花費":id==="checklist"?"打卡":id==="food"?"美食":id==="day1"?"Day1":id==="day2"?"Day2":id==="day3"?"Day3":""));
+ if(btn)btn.classList.add("active");
+ window.scrollTo({top:0,behavior:"smooth"});
+ if(id==="checklist") renderChecklist();
+ if(id==="budget") renderBudget();
+}
+function toggleCheck(id){
+ const data=JSON.parse(localStorage.getItem("matsu-checks")||"{}");
+ data[id]=!data[id];
+ localStorage.setItem("matsu-checks",JSON.stringify(data));
+ renderChecklist();
+ alert(data[id]?"已完成打卡":"已取消打卡");
+}
+function renderChecklist(){
+ const data=JSON.parse(localStorage.getItem("matsu-checks")||"{}");
+ const all=PLACES.filter(p=>["景點","美食","住宿","交通"].includes(p.type));
+ const done=all.filter(p=>data[p.id]).length;
+ document.getElementById("bar").style.width=(done/all.length*100)+"%";
+ document.getElementById("pct").textContent=`${done}/${all.length} 完成`;
+ document.getElementById("checks").innerHTML=all.map(p=>`<label class="check-item"><input type="checkbox" ${data[p.id]?"checked":""} onchange="toggleCheck('${p.id}')"><span>${p.name}<br><small>${p.area}｜${p.type}</small></span></label>`).join("");
+}
+let rows=[];
+function defaultRows(){return [["早餐 Day1",600],["午餐 Day1",1750],["下午茶 Day1",1250],["晚餐 Day1",1750],["南北竿船票",1600],["早餐 Day2",600],["午餐 Day2",1500],["晚餐 Day2",2500],["油資/停車/雜支",1000],["伴手禮",3000]]}
+function renderBudget(){
+ const el=document.getElementById("rows");
+ el.innerHTML=rows.map((r,i)=>`<div class="budget-row"><input value="${r[0]}" onchange="rows[${i}][0]=this.value;calc()"><input type="number" value="${r[1]}" onchange="rows[${i}][1]=Number(this.value);calc()"><button class="btn warn" onclick="rows.splice(${i},1);renderBudget()">×</button></div>`).join("");
+ calc();
+}
+function calc(){
+ const total=rows.reduce((s,r)=>s+Number(r[1]||0),0);
+ const people=Number(document.getElementById("people").value||1);
+ document.getElementById("total").textContent="NT$"+money(total);
+ document.getElementById("avg").textContent="NT$"+money(Math.ceil(total/people));
+ saveBudget(false);
+}
+function addRow(){rows.push(["新增項目",0]);renderBudget()}
+function saveBudget(show){localStorage.setItem("matsu-budget",JSON.stringify(rows));localStorage.setItem("matsu-people",document.getElementById("people").value);if(show)alert("已儲存")}
+function resetBudget(){rows=defaultRows();document.getElementById("people").value=5;renderBudget()}
+document.getElementById("homeToday").innerHTML=itineraryHTML("day1");
+document.getElementById("day1List").innerHTML=itineraryHTML("day1");
+document.getElementById("day2List").innerHTML=itineraryHTML("day2");
+document.getElementById("day3List").innerHTML=itineraryHTML("day3");
+document.getElementById("foodList").innerHTML=PLACES.filter(p=>p.type==="美食").map(cardHTML).join("");
+document.getElementById("placeList").innerHTML=PLACES.filter(p=>["景點","住宿","交通"].includes(p.type)).map(cardHTML).join("");
+rows=JSON.parse(localStorage.getItem("matsu-budget")||"null")||defaultRows();
+document.getElementById("people").value=localStorage.getItem("matsu-people")||5;
+document.getElementById("people").oninput=calc;
+renderBudget();
+renderChecklist();
 </script>
-
-
-</body></html>
+</body>
+</html>
